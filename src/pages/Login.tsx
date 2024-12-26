@@ -14,51 +14,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useNavigate } from "react-router-dom"
-import { signInWithGoogle } from "@/lib/firebase/auth"
-import { setLogLevel } from "firebase/firestore";
-
+import { onSubmit, handleGoogleSignIn } from "@/handlers/authenticationHandler"
 
 export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(false)
-    const navigate = useNavigate() // useNavigate for routing in React
-
-    async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        setIsLoading(true)
-
-        const formData = new FormData(event.currentTarget)
-        const email = formData.get("email")
-        const password = formData.get("password")
-
-        try {
-            // Here you would implement email/password login
-            await new Promise((resolve) => setTimeout(resolve, 1000))
-            navigate("/dashboard") // Use navigate instead of router.push
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
-    async function handleGoogleSignIn() {
-        setIsLoading(true)
-        try {
-            const result = await signInWithGoogle()
-            if (result.success) {
-                navigate("/dashboard") // Use navigate instead of router.push
-            } else {
-                throw new Error(result.error)
-            }
-        } catch (error: any) {
-            console.log(error)
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
-
-    setLogLevel("debug");
+    const navigate = useNavigate()
 
 
     return (
@@ -78,8 +38,7 @@ export default function LoginPage() {
                     <Button
                         className="w-full"
                         variant="outline"
-                        onClick={handleGoogleSignIn}
-                        disabled={isLoading}
+                        onClick={() => handleGoogleSignIn(setIsLoading, navigate)} disabled={isLoading}
                     >
                         <svg
                             className="mr-2 h-4 w-4"
@@ -106,33 +65,32 @@ export default function LoginPage() {
                             <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
                         </div>
                     </div>
-                    <form onSubmit={onSubmit}>
-                        <div className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    placeholder="m@example.com"
-                                    required
-                                    disabled={isLoading}
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="password">Password</Label>
-                                <Input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    required
-                                    disabled={isLoading}
-                                />
-                            </div>
-                            <Button className="w-full" type="submit" disabled={isLoading}>
-                                {isLoading ? "Signing in..." : "Sign in"}
-                            </Button>
+                    <form onSubmit={(event) => onSubmit(event, setIsLoading, navigate)}>                        <div className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="m@example.com"
+                                required
+                                disabled={isLoading}
+                            />
                         </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                id="password"
+                                name="password"
+                                type="password"
+                                required
+                                disabled={isLoading}
+                            />
+                        </div>
+                        <Button className="w-full" type="submit" disabled={isLoading}>
+                            {isLoading ? "Signing in..." : "Sign in"}
+                        </Button>
+                    </div>
                     </form>
                 </CardContent>
                 <CardFooter className="flex flex-col space-y-4">

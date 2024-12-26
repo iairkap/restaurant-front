@@ -10,6 +10,7 @@ import Staff from './pages/Dashboard/Staff'
 import Settings from './pages/Dashboard/Settings'
 import DashboardLayout from './Layout'
 import LoginPage from './pages/Login'
+import SignUpPage from './pages/SignUp'
 function App() {
 
   return (
@@ -19,8 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path='login' element={<LoginPage />} />
-
-
+        <Route path='signup' element={<SignUpPage />} />
         {/* Dashbord Routes */}
         <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
         <Route path="/dashboard/menu" element={<DashboardLayout><MenuManagment /></DashboardLayout>} />

@@ -1,0 +1,184 @@
+/* Container Styles */
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* Card Styles */
+.card {
+  width: 100%;
+  max-width: 24rem; /* max-w-sm */
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: 1.5rem;
+}
+
+.spaceY1 > *:not(:last-child) {
+  margin-bottom: 0.25rem; /* Space between elements */
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.headerIcon {
+  height: 2rem; /* h-8 */
+  width: 2rem; /* w-8 */
+  margin-right: 0.5rem;
+}
+
+.headerTitle {
+  font-weight: 700; /* font-bold */
+  font-size: 1.5rem; /* text-2xl */
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.cardDescription {
+  text-align: center;
+  color: rgba(107, 114, 128, 1); /* text-gray-500 */
+}
+
+/* Card Content */
+.cardContent {
+  padding: 1.5rem;
+}
+
+.spaceY4 > *:not(:last-child) {
+  margin-bottom: 1rem; /* Space between elements */
+}
+
+/* Button Styles */
+.button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  border: 1px solid rgba(107, 114, 128, 1); /* outline style */
+  border-radius: 0.375rem;
+  background-color: white;
+  color: rgba(107, 114, 128, 1); /* text-muted-foreground */
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button:hover:not(:disabled) {
+  background-color: rgba(229, 231, 235, 1); /* hover:bg-gray-200 */
+}
+
+/* SVG Icon */
+.svgIcon {
+  margin-right: 0.5rem;
+  height: 1rem; /* h-4 */
+  width: 1rem; /* w-4 */
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.inset0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.flex {
+  display: flex;
+}
+
+.itemsCenter {
+  align-items: center;
+}
+
+.justifyCenter {
+  justify-content: center;
+}
+
+.borderT {
+  border-top: 1px solid rgba(229, 231, 235, 1); /* default border color */
+}
+
+.textXs {
+  font-size: 0.75rem;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.bgBackground {
+  background: var(--background-color); /* Replace with your custom variable */
+}
+
+.px2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.textMutedForeground {
+  color: var(--muted-foreground-color); /* Replace with your custom variable */
+}
+
+/* Form and Input Styles */
+.spaceY4 > *:not(:last-child) {
+  margin-bottom: 1rem; /* Space between elements */
+}
+
+.spaceY2 > *:not(:last-child) {
+  margin-bottom: 0.5rem; /* Space between elements */
+}
+
+.textSm {
+  font-size: 0.875rem;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.textGray500 {
+  color: rgba(107, 114, 128, 1); /* text-gray-500 */
+}
+
+.darkTextGray400 {
+  color: rgba(156, 163, 175, 1); /* dark:text-gray-400 */
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.underlineOffset4 {
+  text-underline-offset: 0.25rem;
+}
+
+.hoverTextPrimary:hover {
+  color: var(--primary-color); /* Replace with your custom variable */
+}

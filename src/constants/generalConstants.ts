@@ -1,5 +1,7 @@
 import { DollarSign, Eye, ShoppingBag, Utensils } from "lucide-react";
 
+export const BACKEND_URL = "http://localhost:3000";
+
 export const stats = [
   {
     name: "Total Orders",
