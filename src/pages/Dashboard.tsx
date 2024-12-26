@@ -11,23 +11,33 @@ import {
 } from "@/components/ui/card"
 import useUserInformationStore from '@/store/userInformation';
 import { useEffect } from "react"
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import OnBoarding from '@/components/sections/dashboard/onBoarding';
+import useAuthStore from '@/store/useAuthStore';
 /* import { fetchUserByEmail } from '@/api/userAPI';
  */
 const DashboardPage = () => {
 
     const { userInformation, fetchUserInformationByEmail, hasRestaurants } = useUserInformationStore();
+    const setUser = useAuthStore((state) => state.setUser);
 
 
-    console.log("hasRestaurants", hasRestaurants)
+
 
     useEffect(() => {
         const auth = getAuth();
-        const user = auth.currentUser;
-        if (user && user.email) {
-            fetchUserInformationByEmail(user.email);
-        }
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user && user.email) {
+
+                setUser(user);
+                fetchUserInformationByEmail(user.email);
+            } else {
+
+                setUser(null);
+            }
+        });
+
+        return () => unsubscribe();
     }, [fetchUserInformationByEmail]);
 
 

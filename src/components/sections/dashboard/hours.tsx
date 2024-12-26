@@ -11,6 +11,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import useOnboardingStore from "@/store/useOnBoarding"
+import { postRestaurant } from "@/api/restaurantApi"
+import useAuthStore from "@/store/useAuthStore"
+import useUserInformationStore from "@/store/userInformation"
+
 
 const DAYS = [
     "monday",
@@ -25,9 +29,17 @@ const DAYS = [
 export function HoursStep() {
     const { state, updateRestaurantInfo, nextStep, previousStep } = useOnboardingStore()
 
+
+    console.log(state.restaurantInfo)
+
+
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
         e.preventDefault()
+        postRestaurant(state.restaurantInfo)
         nextStep()
+
     }
 
     const updateHours = (day: string, type: 'open' | 'close', value: string) => {

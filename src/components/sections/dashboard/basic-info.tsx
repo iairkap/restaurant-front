@@ -52,8 +52,8 @@ export function BasicInfoStep() {
                         <Label htmlFor="cuisine">Cuisine Type</Label>
                         <Input
                             id="cuisine"
-                            value={state.restaurantInfo.cuisine}
-                            onChange={(e) => updateRestaurantInfo({ cuisine: e.target.value })}
+                            value={state.restaurantInfo.cuisine_type}
+                            onChange={(e) => updateRestaurantInfo({ cuisine_type: e.target.value })}
                             required
                         />
                     </div>

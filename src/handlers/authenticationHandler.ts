@@ -28,7 +28,6 @@ export async function onSubmit(
     }
     navigate("/dashboard");
   } catch (error) {
-    console.log(error);
   } finally {
     setIsLoading(false);
   }
@@ -47,7 +46,6 @@ export async function handleGoogleSignIn(
       throw new Error(result.error);
     }
   } catch (error) {
-    console.log(error);
   } finally {
     setIsLoading(false);
   }
@@ -101,7 +99,6 @@ export async function handleLogInSubmit(
     await createUserInBackend(email, "restaurant_owner");
     navigate("/login");
   } catch (error) {
-    console.log(error);
   } finally {
     setIsLoading(false);
   }

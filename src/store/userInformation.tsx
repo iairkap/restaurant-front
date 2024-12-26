@@ -1,16 +1,18 @@
 import { create } from "zustand";
 import { fetchUserByEmail } from "@/api/userAPI";
 
-interface UserInformation {
+export interface UserInformation {
+    id?: number;
     email: string;
     name: string;
     role: string;
     restaurants: RestaurantInformation[];
 }
 
-interface RestaurantInformation {
+export interface RestaurantInformation {
     id: number;
     name: string;
+
     address: string;
     picture: string[];
     isActive: boolean;

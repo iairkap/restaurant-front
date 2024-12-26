@@ -1,13 +1,25 @@
 
 import { ChevronRight } from 'lucide-react'
-
+import { useEffect } from 'react'
 import { BasicInfoStep } from "./basic-info"
 import { ContactInfoStep } from "./contact-info"
 import { HoursStep } from "./hours"
 import useOnboardingStore from "@/store/useOnBoarding"
+import useUserInformationStore from '@/store/userInformation'
 
 function OnboardingSteps() {
-    const { state } = useOnboardingStore()
+    const { state, updateRestaurantInfo } = useOnboardingStore()
+    const { userInformation } = useUserInformationStore()
+
+
+    useEffect(() => {
+        if (userInformation?.id) {
+            updateRestaurantInfo({ user_id: userInformation.id });
+        }
+    }, [userInformation, updateRestaurantInfo]);
+
+
+
 
     const steps = [
         { id: 1, name: "Basic Information", component: BasicInfoStep },

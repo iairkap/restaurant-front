@@ -7,9 +7,7 @@ export const fetchUserInformation = async () => {
       throw new Error("Failed to fetch user information");
     }
     return await response.json();
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const fetchUserById = async (userId: string) => {
@@ -19,9 +17,7 @@ export const fetchUserById = async (userId: string) => {
       throw new Error("Failed to fetch user information");
     }
     return await response.json();
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const fetchUserByEmail = async (email: string) => {
@@ -34,7 +30,5 @@ export const fetchUserByEmail = async (email: string) => {
       throw new Error("Failed to fetch user information");
     }
     return await response.json();
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };

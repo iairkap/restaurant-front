@@ -3,7 +3,9 @@ import {
   signInWithPopup,
   signOut,
   createUserWithEmailAndPassword,
+  setPersistence,
   signInWithEmailAndPassword,
+  browserLocalPersistence,
 } from "firebase/auth";
 import { auth } from "./config.ts";
 import { FirebaseError } from "firebase/app";
@@ -19,11 +21,21 @@ interface AuthResult {
   error?: string;
 }
 
+//Helper para establecer cookies con tiempos de expiracion
+
+function setCookie(name: string, value: string, hours: number) {
+  const date = new Date();
+  date.setTime(date.getTime() + hours * 60 * 60 * 1000);
+  document.cookie = `${name}=${value}; path=/; expires=${date.toUTCString()}`;
+}
+
 export async function createUser(
   email: string,
   password: string
 ): Promise<AuthResult> {
   try {
+    await setPersistence(auth, browserLocalPersistence); // Persistencia local
+
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -33,7 +45,7 @@ export async function createUser(
     const token = await user.getIdToken();
 
     // Guardar el token en el almacenamiento local
-    document.cookie = `__session=${token}; path=/;`;
+    setCookie("__session", token, 48);
     return {
       success: true,
       user: {
@@ -59,6 +71,8 @@ export async function signInWithEmailAndPasswordA(
   password: string
 ): Promise<AuthResult> {
   try {
+    await setPersistence(auth, browserLocalPersistence); // Persistencia local
+
     // Llamada a Firebase Authentication para iniciar sesión
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -69,9 +83,8 @@ export async function signInWithEmailAndPasswordA(
     const token = await user.getIdToken();
 
     // Guardar el token en el almacenamiento local
-    document.cookie = `__session=${token}; path=/;`;
+    setCookie("__session", token, 48);
 
-    console.log("User signed in:", user);
     return { success: true };
   } catch (error: unknown) {
     if (error instanceof FirebaseError) {
@@ -87,13 +100,15 @@ export async function signInWithEmailAndPasswordA(
 export async function signInWithGoogle(): Promise<AuthResult> {
   try {
     const provider = new GoogleAuthProvider();
+    await setPersistence(auth, browserLocalPersistence); // Persistencia local
+
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
     const token = await user.getIdToken();
 
     // Guardar el token en el almacenamiento local
-    document.cookie = `__session=${token}; path=/;`;
+    setCookie("__session", token, 48);
 
     return {
       success: true,
@@ -120,6 +135,8 @@ export async function signInWithGoogle(): Promise<AuthResult> {
 export async function signOutUser(): Promise<AuthResult> {
   try {
     await signOut(auth);
+    setCookie("__session", "", -1); // Configurar expiración en el pasado
+
     return { success: true };
   } catch (error) {
     if (error instanceof FirebaseError) {

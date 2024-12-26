@@ -8,6 +8,18 @@ export interface Restaurants {
   id: number;
   name: string;
   address: string;
+  cuisine: string;
+  user_id: number;
+  picture: string[];
+  isActive: boolean;
+  description: string;
+  phone: string;
+}
+
+export interface NewRestaurant {
+  name: string;
+  address: string;
+  cuisine: string;
   user_id: number;
   picture: string[];
   isActive: boolean;
