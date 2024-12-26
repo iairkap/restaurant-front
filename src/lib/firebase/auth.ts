@@ -6,6 +6,7 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
   browserLocalPersistence,
+  Auth,
 } from "firebase/auth";
 import { auth } from "./config.ts";
 import { FirebaseError } from "firebase/app";
@@ -67,13 +68,13 @@ export async function createUser(
 }
 
 export async function signInWithEmailAndPasswordA(
+  auth: Auth,
   email: string,
   password: string
 ): Promise<AuthResult> {
   try {
     await setPersistence(auth, browserLocalPersistence); // Persistencia local
 
-    // Llamada a Firebase Authentication para iniciar sesión
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -84,6 +85,7 @@ export async function signInWithEmailAndPasswordA(
 
     // Guardar el token en el almacenamiento local
     setCookie("__session", token, 48);
+    console.log(user);
 
     return { success: true };
   } catch (error: unknown) {

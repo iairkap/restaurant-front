@@ -5,7 +5,7 @@ import {
   createUser,
 } from "@/lib/firebase/auth";
 import { BACKEND_URL } from "@/constants/generalConstants";
-
+import { Auth } from "firebase/auth"; /* 
 export async function onSubmit(
   event: React.FormEvent<HTMLFormElement>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -28,11 +28,11 @@ export async function onSubmit(
     }
     navigate("/dashboard");
   } catch (error) {
+    console.error("Error signing in:", error);
   } finally {
     setIsLoading(false);
   }
-}
-
+} */
 export async function handleGoogleSignIn(
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
   navigate: ReturnType<typeof useNavigate>
@@ -40,25 +40,36 @@ export async function handleGoogleSignIn(
   setIsLoading(true);
   try {
     const result = await signInWithGoogle();
-    if (result.success) {
+    if (result.success && result.user) {
+      // Create user in backend
+      await createUserInBackend(
+        result.user.uid,
+        result.user.email,
+        "restaurant_owner"
+      );
       navigate("/dashboard");
     } else {
       throw new Error(result.error);
     }
   } catch (error) {
+    console.error("Error signing in with Google:", error);
   } finally {
     setIsLoading(false);
   }
 }
 
-export async function createUserInBackend(email: string, role: string) {
+export async function createUserInBackend(
+  uid: string,
+  email: string,
+  role: string
+) {
   try {
     const response = await fetch(`${BACKEND_URL}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, role }),
+      body: JSON.stringify({ uid, email, role }),
     });
 
     if (!response.ok) {
@@ -79,7 +90,7 @@ export async function createUserInBackend(email: string, role: string) {
   }
 }
 
-export async function handleLogInSubmit(
+export async function handleSignUp(
   event: React.FormEvent<HTMLFormElement>,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
   navigate: ReturnType<typeof useNavigate>
@@ -96,9 +107,32 @@ export async function handleLogInSubmit(
     if (!result.success) {
       throw new Error(result.error);
     }
-    await createUserInBackend(email, "restaurant_owner");
+    await createUserInBackend(result.user.uid, email, "restaurant_owner");
     navigate("/login");
   } catch (error) {
+    console.error("Error signing in:", error);
+  } finally {
+    setIsLoading(false);
+  }
+}
+export async function handleLogin(
+  auth: Auth,
+  email: string,
+  password: string,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  navigate: ReturnType<typeof useNavigate>
+) {
+  setIsLoading(true);
+  try {
+    const result = await signInWithEmailAndPasswordA(auth, email, password);
+    if (!result.success) {
+      console.log(result.error);
+      throw new Error(result.error);
+    }
+    navigate("/dashboard");
+  } catch (error) {
+    console.error("Error signing in:", error);
+    console.log(error);
   } finally {
     setIsLoading(false);
   }

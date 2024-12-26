@@ -20,6 +20,9 @@ const DashboardPage = () => {
 
     const { userInformation, fetchUserInformationByEmail, hasRestaurants } = useUserInformationStore();
     const setUser = useAuthStore((state) => state.setUser);
+    const { user } = useAuthStore();
+
+    console.log(userInformation)
 
 
 
@@ -55,7 +58,7 @@ const DashboardPage = () => {
     return (
         <div className="space-y-8 ">
             <div>
-                <h2 className="text-2xl font-bold tracking-tight">Welcome back, {userInformation?.email}</h2>
+                <h2 className="text-2xl font-bold tracking-tight">Welcome back, {user?.displayName || user?.email}</h2>
                 <p className="text-muted-foreground">Here's what's happening with your restaurant today.</p>
             </div>
 

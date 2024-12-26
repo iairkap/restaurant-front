@@ -14,11 +14,25 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useNavigate } from "react-router-dom"
-import { onSubmit, handleGoogleSignIn } from "@/handlers/authenticationHandler"
+import { handleGoogleSignIn, handleLogin } from "@/handlers/authenticationHandler"
+import styles from "@/styles/signup.module.css"
+import { Link } from "react-router-dom"
+import { formFields } from "@/constants/signUpForm"
+import { getAuth } from "firebase/auth"
+
 
 export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(false)
+    const auth = getAuth()
     const navigate = useNavigate()
+
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        await handleLogin(auth, email, password, setIsLoading, navigate);
+    };
 
 
     return (
@@ -57,45 +71,44 @@ export default function LoginPage() {
                         </svg>
                         Continue with Google
                     </Button>
-                    <div className="relative">
-                        <div className="absolute inset-0 flex items-center">
-                            <span className="w-full border-t" />
+                    <div className={styles.relative}>
+                        <div className={`${styles.absolute} ${styles.inset0} ${styles.flex} ${styles.itemsCenter}`}>
+                            <span className={styles.borderT} />
                         </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                        <div className={`${styles.relative} ${styles.flex} ${styles.justifyCenter} ${styles.textXs} ${styles.uppercase}`}>
+                            <span className={`${styles.bgBackground} ${styles.px2} ${styles.textMutedForeground}`}>
+                                Or continue with
+                            </span>
                         </div>
                     </div>
-                    <form onSubmit={(event) => onSubmit(event, setIsLoading, navigate)}>                        <div className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="m@example.com"
-                                required
-                                disabled={isLoading}
-                            />
+                    <form onSubmit={onSubmit}>
+                        <div className={styles.spaceY4}>
+                            {formFields.map(({ id, name, label, placeholder, type }) => (
+                                <div className={styles.spaceY2} key={id}>
+                                    <Label htmlFor={id}>{label}</Label>
+                                    <Input
+                                        id={id}
+                                        name={name}
+                                        type={type}
+                                        placeholder={placeholder}
+                                        required
+                                        disabled={isLoading}
+                                    />
+                                </div>
+                            ))}
+                            <Button className="w-full" type="submit" disabled={isLoading}>
+                                {isLoading ? "Signing in..." : "Sign in"}
+                            </Button>
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                disabled={isLoading}
-                            />
-                        </div>
-                        <Button className="w-full" type="submit" disabled={isLoading}>
-                            {isLoading ? "Signing in..." : "Sign in"}
-                        </Button>
-                    </div>
                     </form>
                 </CardContent>
                 <CardFooter className="flex flex-col space-y-4">
                     <div className="text-sm text-center text-gray-500 dark:text-gray-400">
-                        Don't have an account?{" "}
+                        Don't have an account?
+                        <Link className={`${styles.underline} ${styles.underlineOffset4} ${styles.hoverTextPrimary}`} to="/signup">
+                            Sign Up
+                        </Link>
+
                     </div>
 
                 </CardFooter>

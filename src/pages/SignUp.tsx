@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label"
 
 import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
-import { handleLogInSubmit, handleGoogleSignIn, } from "@/handlers/authenticationHandler"
+import { handleSignUp, handleGoogleSignIn, } from "@/handlers/authenticationHandler"
 import styles from "@/styles/signup.module.css"
 import { formFields } from "@/constants/signUpForm"
 export default function SignUpPage() {
@@ -72,7 +72,7 @@ export default function SignUpPage() {
                             </span>
                         </div>
                     </div>
-                    <form onSubmit={(event) => handleLogInSubmit(event, setIsLoading, navigate)}>
+                    <form onSubmit={(event) => handleSignUp(event, setIsLoading, navigate)}>
                         <div className={styles.spaceY4}>
                             {formFields.map(({ id, name, label, placeholder, type }) => (
                                 <div className={styles.spaceY2} key={id}>

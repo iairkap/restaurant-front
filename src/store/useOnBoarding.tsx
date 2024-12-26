@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 interface OnboardingState {
     step: number;
+    userName: string;
     restaurantInfo: {
         user_id: number;
         name: string;
@@ -21,6 +22,7 @@ interface OnboardingState {
 
 interface OnboardingStore {
     state: OnboardingState;
+    updateUserName: (name: string) => void;
     updateRestaurantInfo: (info: Partial<OnboardingState["restaurantInfo"]>) => void;
     nextStep: () => void;
     previousStep: () => void;
@@ -31,6 +33,7 @@ const useOnboardingStore = create<OnboardingStore>((set, get) => {
 
     const defaultState: OnboardingState = {
         step: 1,
+        userName: "",
         restaurantInfo: {
             user_id: 0,
             name: "",
@@ -61,6 +64,14 @@ const useOnboardingStore = create<OnboardingStore>((set, get) => {
                         ...state.state.restaurantInfo,
                         ...info,
                     },
+                },
+            })),
+
+        updateUserName: (name) =>
+            set((state) => ({
+                state: {
+                    ...state.state,
+                    userName: name,
                 },
             })),
         nextStep: () => {

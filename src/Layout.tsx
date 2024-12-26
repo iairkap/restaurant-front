@@ -5,7 +5,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Sheet, SheetContent, SheetTrigger } from "./components/ui/sheet"
 import { Link } from 'react-router-dom';
 import { navigation } from "@/constants/dashboardNavigation"
-
 import { ReactNode } from 'react';
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
