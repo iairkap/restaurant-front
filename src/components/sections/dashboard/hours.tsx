@@ -30,16 +30,15 @@ export function HoursStep() {
     const { state, updateRestaurantInfo, nextStep, previousStep } = useOnboardingStore()
 
 
-    console.log(state.restaurantInfo)
 
 
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 
         e.preventDefault()
-        postRestaurant(state.restaurantInfo)
-        nextStep()
-
+        postRestaurant(state.restaurantInfo, state.userName)
+        /*         nextStep()
+         */
     }
 
     const updateHours = (day: string, type: 'open' | 'close', value: string) => {

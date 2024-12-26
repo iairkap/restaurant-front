@@ -1,5 +1,4 @@
-
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -7,18 +6,28 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import useOnboardingStore from "@/store/useOnBoarding"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import useOnboardingStore from "@/store/useOnBoarding";
+import { inputFieldsBasicInfo } from "@/constants/onBoarding";
+
+type InputChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+
 export function BasicInfoStep() {
-    const { state, updateRestaurantInfo, nextStep } = useOnboardingStore()
+    const { state, updateRestaurantInfo, nextStep, updateUserName } = useOnboardingStore();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        nextStep()
-    }
+        e.preventDefault();
+        nextStep();
+    };
+
+    const inputFields = inputFieldsBasicInfo(
+        state,
+        updateUserName,
+        updateRestaurantInfo
+    );
 
     return (
         <form onSubmit={handleSubmit}>
@@ -30,33 +39,29 @@ export function BasicInfoStep() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="name">Restaurant Name</Label>
-                        <Input
-                            id="name"
-                            value={state.restaurantInfo.name}
-                            onChange={(e) => updateRestaurantInfo({ name: e.target.value })}
-                            required
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="description">Description</Label>
-                        <Textarea
-                            id="description"
-                            value={state.restaurantInfo.description}
-                            onChange={(e) => updateRestaurantInfo({ description: e.target.value })}
-                            required
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="cuisine">Cuisine Type</Label>
-                        <Input
-                            id="cuisine"
-                            value={state.restaurantInfo.cuisine_type}
-                            onChange={(e) => updateRestaurantInfo({ cuisine_type: e.target.value })}
-                            required
-                        />
-                    </div>
+
+                    {
+                        //eslint-disable-next-line
+                        inputFields.map((field: any) => (
+                            <div key={field.id} className="space-y-2">
+                                <Label htmlFor={field.id}>{field.name}</Label>
+                                {field.type === "input" ? (
+                                    <Input
+                                        id={field.id}
+                                        value={field.value || ""}
+                                        onChange={(e: InputChangeEvent) => field.onChange(e)}
+                                        required={field.required}
+                                    />
+                                ) : (
+                                    <Textarea
+                                        id={field.id}
+                                        value={field.value || ""}
+                                        onChange={(e: InputChangeEvent) => field.onChange(e)}
+                                        required={field.required}
+                                    />
+                                )}
+                            </div>
+                        ))}
                 </CardContent>
                 <CardFooter className="flex justify-between">
                     <Button variant="ghost" type="button" disabled>
@@ -66,5 +71,5 @@ export function BasicInfoStep() {
                 </CardFooter>
             </Card>
         </form>
-    )
+    );
 }
