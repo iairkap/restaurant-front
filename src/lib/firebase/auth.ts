@@ -30,6 +30,10 @@ export async function createUser(
       password
     );
     const user = userCredential.user;
+    const token = await user.getIdToken();
+
+    // Guardar el token en el almacenamiento local
+    document.cookie = `__session=${token}; path=/;`;
     return {
       success: true,
       user: {
@@ -62,6 +66,10 @@ export async function signInWithEmailAndPasswordA(
       password
     );
     const user = userCredential.user;
+    const token = await user.getIdToken();
+
+    // Guardar el token en el almacenamiento local
+    document.cookie = `__session=${token}; path=/;`;
 
     console.log("User signed in:", user);
     return { success: true };
@@ -81,6 +89,11 @@ export async function signInWithGoogle(): Promise<AuthResult> {
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
+
+    const token = await user.getIdToken();
+
+    // Guardar el token en el almacenamiento local
+    document.cookie = `__session=${token}; path=/;`;
 
     return {
       success: true,

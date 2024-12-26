@@ -28,7 +28,7 @@ export const fetchUserByEmail = async (email: string) => {
   try {
     const response = await fetch(`${BACKEND_URL}/users/email/${email}`, {
       method: "GET",
-      credentials: "include", // Asegúrate de que las cookies se envíen con la solicitud
+      credentials: "include", // Ensure cookies are sent with the request
     });
     if (!response.ok) {
       throw new Error("Failed to fetch user information");

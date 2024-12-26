@@ -71,9 +71,13 @@ export async function createUserInBackend(email: string, role: string) {
     }
 
     return await response.json();
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error in createUserInBackend:", error);
-    throw new Error(`Backend error: ${error.message}`);
+    if (error instanceof Error) {
+      throw new Error(`Backend error: ${error.message}`);
+    } else {
+      throw new Error("Backend error: unknown error");
+    }
   }
 }
 

@@ -9,13 +9,43 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import useUserInformationStore from '@/store/userInformation';
+import { useEffect } from "react"
+import { getAuth } from 'firebase/auth';
+import OnBoarding from '@/components/sections/dashboard/onBoarding';
+/* import { fetchUserByEmail } from '@/api/userAPI';
+ */
 const DashboardPage = () => {
+
+    const { userInformation, fetchUserInformationByEmail, hasRestaurants } = useUserInformationStore();
+
+
+    console.log("hasRestaurants", hasRestaurants)
+
+    useEffect(() => {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (user && user.email) {
+            fetchUserInformationByEmail(user.email);
+        }
+    }, [fetchUserInformationByEmail]);
+
+
+
+
+    if (!hasRestaurants) {
+        return (
+            <div>
+                <OnBoarding />
+            </div>
+        )
+    }
 
 
     return (
         <div className="space-y-8 ">
             <div>
-                <h2 className="text-2xl font-bold tracking-tight">Welcome back, John!</h2>
+                <h2 className="text-2xl font-bold tracking-tight">Welcome back, {userInformation?.email}</h2>
                 <p className="text-muted-foreground">Here's what's happening with your restaurant today.</p>
             </div>
 
